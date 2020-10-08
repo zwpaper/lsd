@@ -364,23 +364,22 @@ fn test_version_sort_overwrite_by_sizesort() {
 
 #[cfg(test)]
 #[cfg(target_os = "linux")]
-macro_rules! bad_utf8 {
-    ($tmp:expr, $pre:expr, $suf:expr) => {{
-        let mut fname = format!($pre, $tmp.path().to_str().unwrap()).into_bytes();
-        fname.reserve(2 + $suf.len());
-        fname.push(0xa7);
-        fname.push(0xfd);
-        fname.extend($suf.as_bytes());
-        unsafe { String::from_utf8_unchecked(fname) }
-    }};
+fn bad_utf8(tmp: &std::path::Path, pre: &str, suf: &str) -> String {
+    let mut fname = format!("{}/{}", tmp.display(), pre).into_bytes();
+    fname.reserve(2 + suf.len());
+    fname.push(0xa7);
+    fname.push(0xfd);
+    fname.extend(suf.as_bytes());
+    unsafe { String::from_utf8_unchecked(fname) }
 }
 
 #[test]
 #[cfg(target_os = "linux")]
 fn test_bad_utf_8_extension() {
+    use std::fs::File;
     let tmp = tempdir();
-    let fname = bad_utf8!(tmp, "{}/bad.extension", "");
-    std::fs::File::create(fname).expect("failed to create file");
+    let fname = bad_utf8(tmp.path(), "bad.extension", "");
+    File::create(fname).expect("failed to create file");
 
     cmd()
         .arg(tmp.path())
@@ -392,7 +391,7 @@ fn test_bad_utf_8_extension() {
 #[cfg(target_os = "linux")]
 fn test_bad_utf_8_name() {
     let tmp = tempdir();
-    let fname = bad_utf8!(tmp, "{}/bad-name", ".ext");
+    let fname = bad_utf8(tmp.path(), "bad-name", ".ext");
     std::fs::File::create(fname).expect("failed to create file");
 
     cmd()
