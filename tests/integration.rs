@@ -366,12 +366,11 @@ fn test_version_sort_overwrite_by_sizesort() {
 #[cfg(target_os = "linux")]
 macro_rules! bad_utf8 {
     ($tmp:expr, $pre:expr, $suf:expr) => {{
-        let mut fname = format!($pre, $tmp.path().to_str().unwrap())
-            .as_bytes()
-            .to_vec();
+        let mut fname = format!($pre, $tmp.path().to_str().unwrap()).into_bytes();
+        fname.reserve(2 + $suf.len());
         fname.push(0xa7);
         fname.push(0xfd);
-        fname.append($suf.as_bytes().to_vec().as_mut());
+        fname.extend($suf.as_bytes());
         unsafe { String::from_utf8_unchecked(fname) }
     }};
 }
