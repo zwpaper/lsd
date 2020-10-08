@@ -384,7 +384,7 @@ fn test_bad_utf_8_extension() {
     cmd()
         .arg(tmp.path())
         .assert()
-        .stdout(predicate::str::is_match("bad.extension\u{fffd}\u{fffd}").unwrap());
+        .stdout(predicate::str::is_match("bad.extension\u{fffd}\u{fffd}\n$").unwrap());
 }
 
 #[test]
@@ -398,7 +398,7 @@ fn test_bad_utf_8_name() {
     cmd()
         .arg(tmp.path())
         .assert()
-        .stdout(predicate::str::is_match("bad-name\u{fffd}\u{fffd}.ext").unwrap());
+        .stdout(predicate::str::is_match("bad-name\u{fffd}\u{fffd}.ext\n$").unwrap());
 }
 
 fn cmd() -> Command {
