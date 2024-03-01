@@ -343,18 +343,6 @@ pub fn is_path_system(path: &Path) -> bool {
     )
 }
 
-/// Expands the `~` in a path to the current user's home directory
-pub fn expand_home(path: PathBuf) -> PathBuf {
-    if path.starts_with("~") {
-        if let Some(home) = dirs::home_dir() {
-            let mut expanded = home.to_path_buf();
-            expanded.push(path.strip_prefix("~").unwrap());
-            return expanded;
-        }
-    }
-    path
-}
-
 #[cfg(test)]
 mod test {
     use super::*;

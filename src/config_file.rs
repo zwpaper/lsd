@@ -173,9 +173,16 @@ impl Config {
     /// `%APPDATA%\lsd` or `%USERPROFILE%\.config\lsd` in that order.
     /// This will apply both to the config file and the theme file.
     pub fn config_paths() -> impl Iterator<Item = PathBuf> {
+        #[cfg(not(windows))]
+        use xdg::BaseDirectories;
+
         [
-            dirs::config_dir(),
             dirs::home_dir().map(|h| h.join(".config")),
+            dirs::config_dir(),
+            #[cfg(not(windows))]
+            BaseDirectories::with_prefix("")
+                .ok()
+                .map(|p| p.get_config_home()),
         ]
         .iter()
         .filter_map(|p| p.as_ref().map(|p| p.join("lsd")))
