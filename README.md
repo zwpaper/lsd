@@ -14,11 +14,9 @@
     <img alt="Warp" width="300" src="https://github.com/user-attachments/assets/2bda420d-4211-4900-a37e-e3c7056d799c">
   </picture>
 </div>
-  <b>Warp is a blazingly fast, Rust-based terminal reimagined to work like a modern app.</b>
+  <b>Warp, the intelligent terminal</b>
   <div>
-    <sup>Get more done in the CLI with real text editing, block-based output, and AI command search.<br>
-Warp, the intelligent terminal<br>
-Available for MacOS and Linux<br>
+    <sup>Available for MacOS and Linux<br>
 Visit warp.dev to learn more
     </sup>
   </div>
